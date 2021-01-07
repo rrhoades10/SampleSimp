@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{{ super() }}Post
+{% endblock title %}
+
+{% block content %}
+
+
+<ul class="list-group">
+    <li class="list-group-item">
+        {% if post.user_id == current_user.id %}
+        <form class="form-inline" method="POST" enctype="multipart/form-data" action="{{ url_for('blog.edit', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.body(class="form-control", value=post.body, style='width: 950px;') }}
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+        
+        {% else %}
+        {{ post.body }}
+        {% endif %}
+        by: {{ post.user.email }}<br>
+        posted: {{ moment(post.created_on).fromNow() }}
+    </li>
+</ul>
+<a class="btn btn-link" href="{{ url_for('main.index') }}">Go Home</a>
+{% endblock content %}

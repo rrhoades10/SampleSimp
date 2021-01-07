@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Register
+{% endblock title %}
+
+{% set active_page = 'authentication.register' %}
+
+{% block content %}
+<h1>Register Page</h1>
+<div class="col-md-4">
+
+    <form action="{{ url_for('authentication.register') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.first_name(class="form-control", placeholder="First Name") }}
+        </div>
+        <div class="form-group">
+            {{ form.last_name(class="form-control", placeholder="Last Name") }}
+        </div>
+        <div class="form-group">
+            {{ form.username(class="form-control", placeholder="Username") }}
+        </div>
+        <div class="form-group">
+            {{ form.email(class="form-control", placeholder="Email") }}
+            {% for error in form.email.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ error }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.password(class="form-control", placeholder="Password") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+        </div>
+        {{ form.submit(class="btn btn-info btn-block") }}
+    </form>
+    
+</div>
+{% endblock content %}

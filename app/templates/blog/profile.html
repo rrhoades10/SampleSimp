@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{{ super() }}Profile
+{% endblock title %}
+
+{% set active_page = 'blog.profile' %}
+
+{% block content %}
+<h1>Profile Page</h1>
+<div class="col-md-6 offset-md-3">
+    <form action="{{ url_for('blog.profile') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.first_name(class="form-control", placeholder="First Name", value=current_user.first_name) }}
+        </div>
+        <div class="form-group">
+            {{ form.last_name(class="form-control", placeholder="Last Name", value=current_user.last_name) }}
+        </div>
+        <div class="form-group">
+            {{ form.username(class="form-control", placeholder="Username", value='') }}
+        </div>
+        <div class="form-group">
+            {{ form.email(class="form-control", placeholder="Email", value=current_user.email) }}
+            {% for error in form.email.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ error }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.password(class="form-control", placeholder="Password") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+        </div>
+        {{ form.submit(class="btn btn-info btn-block") }}
+    </form>
+</div>
+
+<hr>
+
+<ul class="list-group">
+    {% for p in posts|sort(attribute='created_on', reverse=True) %}
+    <li class="list-group-item">
+        <strong><a href="{{ url_for('blog.edit', post_id=p.id) }}">{{ p.body }}</a></strong> by: {{ p.user.email }}<br>
+        posted: {{ moment(p.created_on).fromNow() }}
+        <span class="float-right">
+            <a href="{{ url_for('blog.delete', post_id=p.id) }}">
+                <i class="fas fa-trash text-danger"></i>
+            </a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

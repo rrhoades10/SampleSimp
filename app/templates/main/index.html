@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{{ super() }}Home
+{% endblock title %}
+
+{% block content %}
+<h1>Hello, {{ current_user.first_name }} {{ current_user.last_name }}</h1>
+<form action="{{ url_for('blog.create') }}" method="POST" class="form-inline">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" style="width: 1020px !important;" id="inlineFormInputName2"
+        name='post' placeholder="Type status here">
+        
+    <button type="submit" class="btn btn-primary mb-2">Post</button>
+</form>
+
+<ul class="list-group">
+    {% for p in posts %}
+    <li class="list-group-item">
+        <strong><a href="{{ url_for('blog.edit', post_id=p.id) }}">{{ p.body }}</a></strong> by: {{ p.user.email }}<br>
+        posted: {{ moment(p.created_on).fromNow() }}
+        {% if p.user_id == current_user.id %}
+        <span class="float-right">
+            <a href="{{ url_for('blog.delete', post_id=p.id) }}">
+                <i class="fas fa-trash text-danger"></i>
+            </a>
+        </span>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

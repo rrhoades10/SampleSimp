@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{{ super() }}Network
+{% endblock title %}
+
+{% set active_page = 'blog.network' %}
+
+{% block content %}
+<h1>Network Page</h1>
+<ul class="list-group">
+    {% for u in users %}
+    {% if not current_user.is_following(u) %}
+    <li class="list-group-item">{{ u.first_name }} {{ u.last_name }} <span class="float-right"> <a
+                href="{{ url_for('blog.follow', user_id=u.id) }}" class="btn btn-success btn-sm">Follow</a> </span></li>
+    {% else %}
+    <li class="list-group-item">{{ u.first_name }} {{ u.last_name }} <span class="float-right"> <a
+                href="{{ url_for('blog.unfollow', user_id=u.id) }}" class="btn btn-warning btn-sm">Unfollow</a> </span>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endblock content %}
